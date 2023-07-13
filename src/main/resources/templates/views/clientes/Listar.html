@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+    <head th:replace="~{template/Template :: head}">
+        <title>CRUD customers</title>
+    </head>
+    <body>
+
+    <header th:replace="~{template/Template :: header}"></header>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 th:text="${titulo}"></h1>
+                    <p th:text="${clientes}"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer th:replace="~{template/Template :: footer}"></footer>
+    </body>
+</html>
