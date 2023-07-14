@@ -13,6 +13,6 @@ public class Ciudad implements Serializable {
 
     @Id
     private int id;
-    private String ciudad;
+    private String nombre;
 
 }
