@@ -6,10 +6,7 @@ import com.org.crudspringweb.services.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,8 +38,22 @@ public class ClienteController {
     @PostMapping("/save")
     public String save(@ModelAttribute Cliente cliente) {
         clienteService.save(cliente);
-        System.out.println("cliente = " + cliente);
-        System.out.println("Cliente guardado con éxito!");
         return "redirect:/views/clientes/";
     }
+
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable("id") Integer id) {
+
+        Cliente cliente = clienteService.findOne(id);
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("ciudades", ciudadService.findAll());
+        return "/views/clientes/viewCrear";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete( @PathVariable("id") Integer id) {
+        clienteService.delete(id);
+        return "redirect:/views/clientes/";
+    }
+
 }

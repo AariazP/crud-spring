@@ -16,7 +16,7 @@
             <div class="card-body  bg-dark text-white text-center">
                 <form th:action="@{/views/clientes/save}" th:object="${cliente}" method="post">
                     <div class="form-group row">
-
+                        <input type="hidden" th:field="*{id}">
                         <label for="nombres" class="col-sm-2 col-form-label">Nombres</label>
                         <div class="col-sm-10">
                             <input type="text" th:field="*{nombres}" class="form-control form-control-sm col-md-6 " id="nombres"

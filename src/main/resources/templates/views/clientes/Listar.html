@@ -9,12 +9,12 @@
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 col-sm-6">
                     <h1 th:text="${titulo}"></h1>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 col-sm-6">
                     <a th:href="@{/views/clientes/create}" class="btn btn-primary">Crear cliente</a>
                     <table class="table">
                         <thead>
@@ -35,6 +35,10 @@
                             <td th:text="${cl.telefono}"></td>
                             <td th:text="${cl.email}"></td>
                             <td th:text="${cl.ciudad.nombre}"></td>
+                            <td>
+                                <a th:href="@{/views/clientes/edit/{id}(id=${cl.id})}" class="btn btn-warning">Editar</a>
+                                <a th:href="@{/views/clientes/delete/{id}(id=${cl.id})}" class="btn btn-danger">Eliminar</a>
+                            </td>
                         </tr>
 
                         </tbody>
