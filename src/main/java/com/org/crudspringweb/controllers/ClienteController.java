@@ -6,8 +6,11 @@ import com.org.crudspringweb.services.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -36,23 +39,60 @@ public class ClienteController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute Cliente cliente) {
+    public String save(@Valid @ModelAttribute Cliente cliente, BindingResult result, Model model, RedirectAttributes attribute) {
+
+        if (result.hasErrors() || cliente.isValid()) {
+            model.addAttribute("cliente", cliente);
+            model.addAttribute("ciudades", ciudadService.findAll());
+            attribute.addFlashAttribute("error", "ATENCION: Error con los datos del cliente!");
+            return "/views/clientes/viewCrear";
+        }
+
         clienteService.save(cliente);
+        attribute.addFlashAttribute("success", "ATENCION: Cliente guardado con exito!");
         return "redirect:/views/clientes/";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") Integer id) {
+    public String edit(Model model, @PathVariable("id") Integer id, RedirectAttributes attribute) {
 
-        Cliente cliente = clienteService.findOne(id);
+        Cliente cliente;
+
+        if (id > 0) {
+            cliente = clienteService.findOne(id);
+
+            if (cliente == null) {
+                attribute.addFlashAttribute("error", "ATENCION: El ID del cliente no existe!");
+                return "redirect:/views/clientes/";
+            }
+        }else {
+            attribute.addFlashAttribute("error", "ATENCION: Error con el ID del cliente");
+            return "redirect:/views/clientes/";
+        }
+
+        cliente = clienteService.findOne(id);
         model.addAttribute("cliente", cliente);
         model.addAttribute("ciudades", ciudadService.findAll());
         return "/views/clientes/viewCrear";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete( @PathVariable("id") Integer id) {
+    public String delete( @PathVariable("id") Integer id, RedirectAttributes attribute) {
+        Cliente cliente;
+
+        if (id > 0) {
+            cliente = clienteService.findOne(id);
+
+            if (cliente == null) {
+                attribute.addFlashAttribute("error", "ATENCION: El ID del cliente no existe!");
+                return "redirect:/views/clientes/";
+            }
+        }else {
+            attribute.addFlashAttribute("error", "ATENCION: Error con el ID del Cliente!");
+            return "redirect:/views/clientes/";
+        }
         clienteService.delete(id);
+        attribute.addFlashAttribute("warning", "ATENCION: Cliente eliminado con exito!");
         return "redirect:/views/clientes/";
     }
 
